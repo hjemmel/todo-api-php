@@ -57,3 +57,9 @@ jobs:
       - run: ./vendor/bin/phpunit --log-junit ~/phpunit/junit.xml tests
 #      - run: ./vendor/bin/codecept build
 #      - run: ./vendor/bin/codecept run
+
+      # storing results :)
+      - store_test_results:
+        path: ~/phpunit
+      - store_artifacts:
+        path: ~/phpunit
