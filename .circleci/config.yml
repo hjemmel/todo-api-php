@@ -60,6 +60,6 @@ jobs:
 
       # storing results :)
       - store_test_results:
-        path: ~/phpunit
+          path: ~/phpunit
       - store_artifacts:
-        path: ~/phpunit
+          path: ~/phpunit
