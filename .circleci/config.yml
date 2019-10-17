@@ -31,6 +31,7 @@ jobs:
             - ./vendor
 
       # run tests with phpunit
+      - run: mkdir -p ~/phpunit
       - run: ./vendor/bin/phpunit --coverage-html ~/phpunit/html --log-junit ~/phpunit/junit.xml tests
 
       # storing results :)
