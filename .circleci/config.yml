@@ -43,7 +43,7 @@ jobs:
           path: ~/phpunit
 
       - codecov/upload:
-          file: ~/phpunit/coverage/coverage.xml
+          file: ~/phpunit/coverage.xml
           flags: backend,php
   deploy:
     docker:
