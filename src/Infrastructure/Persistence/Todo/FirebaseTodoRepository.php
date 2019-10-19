@@ -9,9 +9,9 @@ use App\Domain\Todo\TodoNotFoundException;
 use App\Domain\Todo\TodoRepository;
 use Kreait\Firebase\Database;
 use Kreait\Firebase\Database\Reference;
-use Kreait\Firebase\Exception\ApiException;
+use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Factory;
-use Monolog\Logger;
+use Kreait\Firebase\ServiceAccount;
 use Psr\Log\LoggerInterface;
 
 class FirebaseTodoRepository implements TodoRepository
@@ -34,14 +34,29 @@ class FirebaseTodoRepository implements TodoRepository
     {
         $this->logger = $logger;
 
-        $this->database = (new Factory)->
-        withServiceAccount($_ENV["GOOGLE_KEY_PATH"])
+        $logger->info(str_replace("\\n", "\n",$_ENV["FIREBASE_PRIVATE_KEY"]));
+        $serviceAccount = ServiceAccount::fromArray([
+            "type" => "service_account",
+            "project_id" => $_ENV["FIREBASE_PROJECT_ID"],
+            "private_key_id" => $_ENV["FIREBASE_PRIVATE_KEY_ID"],
+            "private_key" => $_ENV["FIREBASE_PRIVATE_KEY"],
+            "client_email" => $_ENV["FIREBASE_CLIENT_EMAIL"],
+            "client_id" => $_ENV["FIREBASE_CLIENT_ID"],
+            "auth_uri" => "https://accounts.google.com/o/oauth2/auth",
+            "token_uri" => "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url" => $_ENV["FIREBASE_CLIENT_CERT_URL"],
+        ]);
+
+        $this->database = (new Factory)
+            ->withServiceAccount($serviceAccount)
             ->withDatabaseUri($_ENV["DATABASE_URI"])
             ->createDatabase();
     }
 
     /**
      * {@inheritdoc}
+     * @throws FirebaseException
      */
     public function findAll(): array
     {
@@ -60,7 +75,7 @@ class FirebaseTodoRepository implements TodoRepository
 
     /**
      * {@inheritdoc}
-     * @throws ApiException
+     * @throws FirebaseException
      */
     public function findTodoById(string $id): Todo
     {
@@ -73,6 +88,7 @@ class FirebaseTodoRepository implements TodoRepository
 
     /**
      * {@inheritdoc}
+     * @throws FirebaseException
      */
     public function create(string $name, bool $done): Todo
     {
@@ -94,7 +110,7 @@ class FirebaseTodoRepository implements TodoRepository
 
     /**
      * {@inheritdoc}
-     * @throws ApiException
+     * @throws FirebaseException
      */
     public function update(string $id, string $name, bool $done): Todo
     {
@@ -116,7 +132,7 @@ class FirebaseTodoRepository implements TodoRepository
 
     /**
      * {@inheritdoc}
-     * @throws ApiException
+     * @throws FirebaseException
      */
     public function deleteTodoById(string $id): array
     {
@@ -129,7 +145,7 @@ class FirebaseTodoRepository implements TodoRepository
     /**
      * @param string $id
      * @return Reference
-     * @throws ApiException
+     * @throws FirebaseException
      * @throws TodoNotFoundException
      */
     private function getTodoById(string $id)

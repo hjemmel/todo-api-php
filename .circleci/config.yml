@@ -32,13 +32,17 @@ jobs:
 
       # run tests with phpunit
       - run: mkdir -p ~/phpunit
-      - run: ./vendor/bin/phpunit --coverage-html ~/phpunit/html --log-junit ~/phpunit/junit.xml tests
+      - run: ./vendor/bin/phpunit --coverage-clover=~/phpunit/coverage.xml --coverage-html ~/phpunit/html --log-junit ~/phpunit/junit.xml tests
 
       # storing results :)
       - store_test_results:
           path: ~/phpunit
       - store_artifacts:
           path: ~/phpunit
+
+      - codecov/upload:
+          file: ~/phpunit/coverage/coverage.xml
+          flags: backend,php
   deploy:
     docker:
       - image: buildpack-deps:trusty
