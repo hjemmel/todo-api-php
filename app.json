@@ -7,7 +7,7 @@
   "env": {
     "DATABASE_URI": {
       "description": "Your firebase URI database URL.",
-      "generator": "secret"
+      "value": "https://yourdatabase.firebaseio.com/"
     }
   }
 }
