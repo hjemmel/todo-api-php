@@ -51,7 +51,7 @@ jobs:
     steps:
       - checkout
       - run:
-      - name: Generating Firebase key
+          name: Generating Firebase key
           command: |
             cat ./firebase-key-template.json | ./scripts/generate-config.sh | tee ./firebase-key.json
       - run:
