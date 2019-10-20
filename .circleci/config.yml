@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Generating Firebase key
           command: |
-            cat ./firebase-key-template.json | ./scripts/generate-config.sh > ./firebase-key.json
+            cat ./firebase-key-template.json | ./scripts/generate-config.sh > ./public/firebase-key.json
       - run:
           name: Deploy Master to Heroku
           command: |
