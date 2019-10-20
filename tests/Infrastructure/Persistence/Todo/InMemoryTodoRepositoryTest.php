@@ -18,6 +18,13 @@ class InMemoryTodoRepositoryTest extends TestCase
         $this->assertEquals([$todo], $todoRepository->findAll());
     }
 
+    public function testFindAllDefault()
+    {
+        $todoRepository = new InMemoryTodoRepository();
+
+        $this->assertEquals(5, count($todoRepository->findAll()));
+    }
+
     public function testFindTodoOfId()
     {
         $todo = new Todo("C137", 'Rick Sanchez', false);
