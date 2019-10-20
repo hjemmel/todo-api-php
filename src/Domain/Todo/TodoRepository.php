@@ -30,7 +30,7 @@ interface TodoRepository
      * @return Todo
      * @throws TodoInvalidNameException
      */
-    public function create(string $name, bool $done): Todo;
+    public function create(string $name, ?bool $done): Todo;
 
     /**
      * @param string $id
@@ -40,5 +40,5 @@ interface TodoRepository
      * @throws TodoInvalidNameException
      * @throws TodoNotFoundException
      */
-    public function update(string $id, string $name, bool $done): Todo;
+    public function update(string $id, string $name, ?bool $done): Todo;
 }

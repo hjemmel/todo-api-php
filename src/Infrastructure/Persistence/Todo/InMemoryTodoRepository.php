@@ -56,7 +56,7 @@ class InMemoryTodoRepository implements TodoRepository
     /**
      * {@inheritdoc}
      */
-    public function create(string $name, bool $done): Todo
+    public function create(string $name, ?bool $done): Todo
     {
         $this->validateTodo($name);
 
@@ -76,15 +76,11 @@ class InMemoryTodoRepository implements TodoRepository
     /**
      * {@inheritdoc}
      */
-    public function update(string $id, string $name, bool $done): Todo
+    public function update(string $id, string $name, ?bool $done): Todo
     {
         $this->validateTodo($name);
 
         $todo = $this->findTodoById($id);
-
-        if (!isset($this->todos[$id])) {
-            throw new TodoNotFoundException();
-        }
 
         if (!isset($done)) {
             $done = false;
