@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\Infrastructure\Persistence\Todo;
 
 use App\Domain\Todo\Todo;
-use App\Domain\Todo\TodoNotFoundException;
 use App\Infrastructure\Persistence\Todo\InMemoryTodoRepository;
 use Tests\TestCase;
 
@@ -50,6 +49,19 @@ class InMemoryTodoRepositoryTest extends TestCase
         $this->assertEquals($expectedTodo, $todoRepository->findTodoById("C137"));
     }
 
+    public function testUpdateTodoDefaultDone()
+    {
+        $oldTodo = new Todo('C137', 'Rick Sanchez', true);
+
+        $todoRepository = new InMemoryTodoRepository(["C137" => $oldTodo]);
+
+        $todoRepository->update('C137', 'Morty Smith', null);
+
+        $expectedTodo = new Todo('C137', 'Morty Smith', false);
+
+        $this->assertEquals($expectedTodo, $todoRepository->findTodoById("C137"));
+    }
+
     /**
      * @expectedException \App\Domain\Todo\TodoNotFoundException
      */
@@ -68,6 +80,27 @@ class InMemoryTodoRepositoryTest extends TestCase
         $this->assertEquals($todo->getName(), "Rick Sanchez");
         $this->assertTrue($todo->isDone());
         $this->assertIsString($todo->getId());
+    }
+
+    public function testCreateTodoDefaultDone()
+    {
+        $todoRepository = new InMemoryTodoRepository([]);
+
+        $todo = $todoRepository->create('Rick Sanchez', null);
+
+        $this->assertEquals($todo->getName(), "Rick Sanchez");
+        $this->assertFalse($todo->isDone());
+        $this->assertIsString($todo->getId());
+    }
+
+    /**
+     * @expectedException App\Domain\Todo\TodoInvalidNameException
+     */
+    public function testCreateTodoEmptyName()
+    {
+        $todoRepository = new InMemoryTodoRepository([]);
+
+        $todoRepository->create('', null);
     }
 
     public function testDeleteTodo()

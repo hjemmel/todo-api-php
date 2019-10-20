@@ -76,7 +76,7 @@ class FirebaseTodoRepository implements TodoRepository
      * {@inheritdoc}
      * @throws FirebaseException
      */
-    public function create(string $name, bool $done): Todo
+    public function create(string $name, ?bool $done): Todo
     {
         $this->validateTodo($name);
 
@@ -98,7 +98,7 @@ class FirebaseTodoRepository implements TodoRepository
      * {@inheritdoc}
      * @throws FirebaseException
      */
-    public function update(string $id, string $name, bool $done): Todo
+    public function update(string $id, string $name, ?bool $done): Todo
     {
         $this->validateTodo($name);
 
