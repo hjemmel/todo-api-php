@@ -1,5 +1,6 @@
 # Slim Framework 4 Skeleton Application
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 [![CircleCI](https://circleci.com/gh/hjemmel/todo-api-php.svg?style=svg)](https://circleci.com/gh/hjemmel/todo-api-php)
 [![codecov](https://codecov.io/gh/hjemmel/todo-api-php/branch/master/graph/badge.svg)](https://codecov.io/gh/hjemmel/todo-api-php)
 

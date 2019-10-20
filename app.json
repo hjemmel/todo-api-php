@@ -1,0 +1,12 @@
+{
+  "name": "Todo API PHP",
+  "description": "Todo API Writen in PHP",
+  "repository": "https://github.com/hjemmel/todo-api-php",
+  "keywords": ["php", "slim", "firebase"],
+  "env": {
+    "DATABASE_URI": {
+      "description": "Your firebase URI database URL.",
+      "generator": "secret"
+    }
+  }
+}
