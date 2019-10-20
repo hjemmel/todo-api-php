@@ -3,6 +3,7 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 [![CircleCI](https://circleci.com/gh/hjemmel/todo-api-php.svg?style=svg)](https://circleci.com/gh/hjemmel/todo-api-php)
 [![codecov](https://codecov.io/gh/hjemmel/todo-api-php/branch/master/graph/badge.svg)](https://codecov.io/gh/hjemmel/todo-api-php)
+[![CodeFactor](https://www.codefactor.io/repository/github/hjemmel/todo-api-php/badge/master)](https://www.codefactor.io/repository/github/hjemmel/todo-api-php/overview/master)
 
 Use this skeleton application to quickly setup and start working on a new Slim Framework 4 application. This application uses the latest Slim 4 with Slim PSR-7 implementation and PHP-DI container implementation. It also uses the Monolog logger.
 
