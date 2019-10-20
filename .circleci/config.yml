@@ -53,16 +53,15 @@ jobs:
       - run:
           name: Generating Firebase key
           command: |
-            git config --global user.email circleci@circleci
-            git config --global user.name CircleCI
-            git pull
             cat ./firebase-key-template.json | ./scripts/generate-config.sh > ./public/firebase-key.json
       - run:
           name: Deploy Master to Heroku
           command: |
+            git config --global user.email circleci@circleci
+            git config --global user.name CircleCI
             git add ./public/firebase-key.json
             git commit -m "Adding Firebase keyfile"
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master --force
 workflows:
   version: 2.1
   build-deploy:
