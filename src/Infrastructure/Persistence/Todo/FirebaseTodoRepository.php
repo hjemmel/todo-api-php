@@ -34,22 +34,8 @@ class FirebaseTodoRepository implements TodoRepository
     {
         $this->logger = $logger;
 
-        $logger->info(str_replace("\\n", "\n",$_ENV["FIREBASE_PRIVATE_KEY"]));
-        $serviceAccount = ServiceAccount::fromArray([
-            "type" => "service_account",
-            "project_id" => $_ENV["FIREBASE_PROJECT_ID"],
-            "private_key_id" => $_ENV["FIREBASE_PRIVATE_KEY_ID"],
-            "private_key" => $_ENV["FIREBASE_PRIVATE_KEY"],
-            "client_email" => $_ENV["FIREBASE_CLIENT_EMAIL"],
-            "client_id" => $_ENV["FIREBASE_CLIENT_ID"],
-            "auth_uri" => "https://accounts.google.com/o/oauth2/auth",
-            "token_uri" => "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url" => $_ENV["FIREBASE_CLIENT_CERT_URL"],
-        ]);
-
         $this->database = (new Factory)
-            ->withServiceAccount($serviceAccount)
+            ->withServiceAccount(__DIR__ . 'firebase-key.json')
             ->withDatabaseUri($_ENV["DATABASE_URI"])
             ->createDatabase();
     }

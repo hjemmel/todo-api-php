@@ -51,6 +51,10 @@ jobs:
     steps:
       - checkout
       - run:
+      - name: Generating Firebase key
+          command: |
+            cat ./firebase-key-template.json | ./scripts/generate-config.sh | tee ./firebase-key.json
+      - run:
           name: Deploy Master to Heroku
           command: |
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
