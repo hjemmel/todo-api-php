@@ -35,7 +35,7 @@ class FirebaseTodoRepository implements TodoRepository
         $this->logger = $logger;
 
         $this->database = (new Factory)
-            ->withServiceAccount(__DIR__ . 'firebase-key.json')
+            ->withServiceAccount($_SERVER['DOCUMENT_ROOT'] . '/firebase-key.json')
             ->withDatabaseUri($_ENV["DATABASE_URI"])
             ->createDatabase();
     }
