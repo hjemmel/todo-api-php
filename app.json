@@ -2,6 +2,7 @@
   "name": "Todo API PHP",
   "description": "Todo API Writen in PHP",
   "repository": "https://github.com/hjemmel/todo-api-php",
+  "logo": "https://github.com/hjemmel/todo-api-php/blob/master/todo-icon.png?raw=true",
   "keywords": ["php", "slim", "firebase"],
   "env": {
     "DATABASE_URI": {
