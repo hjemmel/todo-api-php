@@ -147,4 +147,87 @@ class FirebaseTodoRepositoryTest extends TestCase
 
         $this->assertEquals($expectedTodo, $todoRepository->update('C137', 'Morty Smith', null));
     }
+
+    /**
+     * @expectedException \App\Domain\Todo\TodoNotFoundException
+     */
+    public function testUpdateThrowsNotFoundException()
+    {
+        $snapshot = $this->createMock(Snapshot::class);
+        $this->ref
+            ->method("getSnapshot")
+            ->willReturn($snapshot);
+
+        $snapshot
+            ->method("exists")
+            ->willReturn(false);
+        $todoRepository = new FirebaseTodoRepository($this->database);
+        $todoRepository->update('C137', 'Rick Sanchez', false);
+    }
+
+    public function testCreateTodo()
+    {
+        $todoRepository = new FirebaseTodoRepository($this->database);
+
+        $snapshot = $this->createMock(Snapshot::class);
+        $this->ref
+            ->method("getSnapshot")
+            ->willReturn($snapshot);
+
+        $snapshot
+            ->method("exists")
+            ->willReturn(true);
+
+        $this->ref
+            ->method("push")
+            ->willReturn($this->ref);
+
+        $this->ref
+            ->method("getKey")
+            ->willReturn("C137");
+
+        $todo = $todoRepository->create('Rick Sanchez', true);
+
+        $this->assertEquals($todo->getName(), "Rick Sanchez");
+        $this->assertTrue($todo->isDone());
+        $this->assertIsString($todo->getId());
+    }
+
+    public function testCreateTodoDefaultDone()
+    {
+        $todoRepository = new FirebaseTodoRepository($this->database);
+
+        $snapshot = $this->createMock(Snapshot::class);
+        $this->ref
+            ->method("getSnapshot")
+            ->willReturn($snapshot);
+
+        $snapshot
+            ->method("exists")
+            ->willReturn(true);
+
+        $this->ref
+            ->method("push")
+            ->willReturn($this->ref);
+
+        $this->ref
+            ->method("getKey")
+            ->willReturn("C137");
+
+        $todo = $todoRepository->create('Rick Sanchez', null);
+
+        $this->assertEquals($todo->getName(), "Rick Sanchez");
+        $this->assertFalse($todo->isDone());
+        $this->assertIsString($todo->getId());
+    }
+
+    /**
+     * @expectedException App\Domain\Todo\TodoInvalidNameException
+     */
+    public function testCreateTodoEmptyName()
+    {
+        $todoRepository = new FirebaseTodoRepository($this->database);
+
+        $todoRepository->create('', null);
+    }
 }
