@@ -4,6 +4,11 @@ codecov:
     uploads: true
 
 coverage:
+  status:
+    project:
+      default:
+        target: 70%
+        threshold: null
   precision: 2
   round: down
   range: "70...100"
