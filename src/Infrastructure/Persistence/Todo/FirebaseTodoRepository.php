@@ -11,7 +11,6 @@ use Kreait\Firebase\Database;
 use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\ServiceAccount;
 use Psr\Log\LoggerInterface;
 
 class FirebaseTodoRepository implements TodoRepository
@@ -30,11 +29,9 @@ class FirebaseTodoRepository implements TodoRepository
      * FirebaseTodoRepository constructor.
      *
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(Database $database = null)
     {
-        $this->logger = $logger;
-
-        $this->database = (new Factory)
+        $this->database = $database ?? (new Factory)
             ->withServiceAccount($_SERVER['DOCUMENT_ROOT'] . '/firebase-key.json')
             ->withDatabaseUri($_ENV["DATABASE_URI"])
             ->createDatabase();
