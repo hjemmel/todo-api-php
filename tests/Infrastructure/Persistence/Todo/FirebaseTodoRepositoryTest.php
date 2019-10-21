@@ -103,4 +103,48 @@ class FirebaseTodoRepositoryTest extends TestCase
         $todoRepository->findTodoById("C137");
     }
 
+    private function updateMock()
+    {
+        $snapshot = $this->createMock(Snapshot::class);
+        $this->ref
+            ->method("getSnapshot")
+            ->willReturn($snapshot);
+
+        $snapshot
+            ->method("exists")
+            ->willReturn(true);
+
+        $this->ref
+            ->method("getValue")
+            ->willReturn(
+                [
+                    "name"=> "Morty Smith",
+                    "done"=> false
+                ]);
+
+        $this->ref
+            ->method("getKey")
+            ->willReturn("C137");
+    }
+    public function testUpdateTodo()
+    {
+        $this->updateMock();
+
+        $todoRepository = new FirebaseTodoRepository($this->database);
+
+        $expectedTodo = new Todo('C137', 'Morty Smith', true);
+
+        $this->assertEquals($expectedTodo, $todoRepository->update('C137', 'Morty Smith', true));
+    }
+
+    public function testUpdateTodoDefaultDone()
+    {
+        $this->updateMock();
+
+        $todoRepository = new FirebaseTodoRepository($this->database);
+
+        $expectedTodo = new Todo('C137', 'Morty Smith', false);
+
+        $this->assertEquals($expectedTodo, $todoRepository->update('C137', 'Morty Smith', null));
+    }
 }
