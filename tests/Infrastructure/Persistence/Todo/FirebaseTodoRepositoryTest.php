@@ -5,9 +5,9 @@ namespace Tests\Infrastructure\Persistence\Todo;
 
 use App\Domain\Todo\Todo;
 use App\Infrastructure\Persistence\Todo\FirebaseTodoRepository;
-use GuzzleHttp\Psr7\Uri;
 use Kreait\Firebase\Database;
 use Kreait\Firebase\Database\Reference;
+use Kreait\Firebase\Database\Snapshot;
 use PHPUnit\Framework\MockObject\MockObject;
 use Tests\TestCase;
 
@@ -55,5 +55,36 @@ class FirebaseTodoRepositoryTest extends TestCase
         $this->assertEquals([new Todo("C137", 'Rick Sanchez', false)], $todos);
     }
 
+//    public function testFindTodoOfId()
+//    {
+//        $this->ref
+//            ->expects($this->any())
+//            ->method("exists")
+//            ->will($this->returnValue(false));
+//
+//        $todo = new Todo("C137", 'Rick Sanchez', false);
+//
+//        $todoRepository = $todoRepository = new FirebaseTodoRepository($this->database);
+//
+//        $this->assertEquals($todo, $todoRepository->findTodoById("C137"));
+//    }
+
+    /**
+     * @expectedException \App\Domain\Todo\TodoNotFoundException
+     */
+    public function testFindTodoByIdThrowsNotFoundException()
+    {
+        $snapshot = $this->createMock(Snapshot::class);
+        $this->ref
+            ->method("getSnapshot")
+            ->willReturn($snapshot);
+
+        $snapshot
+            ->method("exists")
+            ->willReturn(false);
+
+        $todoRepository = new FirebaseTodoRepository($this->database);
+        $todoRepository->findTodoById("C137");
+    }
 
 }
