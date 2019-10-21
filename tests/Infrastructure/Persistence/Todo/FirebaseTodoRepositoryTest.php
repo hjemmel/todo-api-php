@@ -25,9 +25,7 @@ class FirebaseTodoRepositoryTest extends TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->createServiceAccountMock();
 
-        $this->uri = new Uri('http://domain.tld/parent/key');
         $this->database = $this->createMock(Database::class);
         $this->ref = $this->createMock(Reference::class);
 
