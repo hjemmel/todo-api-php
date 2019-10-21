@@ -230,4 +230,35 @@ class FirebaseTodoRepositoryTest extends TestCase
 
         $todoRepository->create('', null);
     }
+
+    public function testDeleteTodo()
+    {
+        $snapshot = $this->createMock(Snapshot::class);
+        $this->ref
+            ->method("getSnapshot")
+            ->willReturn($snapshot);
+
+        $snapshot
+            ->method("exists")
+            ->willReturn(true);
+
+        $this->ref
+            ->method("remove")
+            ->willReturn($this->ref);
+
+        $this->ref
+            ->method("getValue")
+            ->willReturn([
+                "C137" => [
+                    "name"=> "Rick Sanchez",
+                    "done"=> false
+                ]
+            ]);
+
+        $todoRepository = new FirebaseTodoRepository($this->database);
+
+        $todosAfterDelete = $todoRepository->deleteTodoById("C137");
+
+        $this->assertEquals(1, count($todosAfterDelete));
+    }
 }
