@@ -3,7 +3,7 @@ name: delete_branch
 on:
   pull_request:
     types: ["closed", "merged"]
-    branches-ignore:
+    branches:
       - master
       - develop*
 jobs:
