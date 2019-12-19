@@ -3,6 +3,9 @@ name: delete_branch
 on:
   pull_request:
     types: ["closed", "merged"]
+    branches-ignore:
+      - master
+      - develop*
 jobs:
   build:
     runs-on: ubuntu-latest
