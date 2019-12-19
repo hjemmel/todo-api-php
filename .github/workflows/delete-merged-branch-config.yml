@@ -6,7 +6,6 @@ on:
     branches-ignore:
       - master
       - develop*
-      - 'release/**'
 jobs:
   build:
     runs-on: ubuntu-latest
