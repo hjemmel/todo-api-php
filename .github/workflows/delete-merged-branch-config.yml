@@ -1,6 +1,8 @@
 name: delete_branch
 
-on: [pull_request]
+on:
+  pull_request:
+    types: ["closed", "merged"]
 jobs:
   build:
     runs-on: ubuntu-latest
