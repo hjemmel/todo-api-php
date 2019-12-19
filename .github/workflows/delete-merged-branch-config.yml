@@ -1,14 +1,11 @@
 name: delete_branch
 
-on:
-  pull_request:
-    types: [merged, closed]
+on: [pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Delete merged branch
-      uses: SvanBoxel/delete-merged-branch@v1.3.3
+    - uses: jessfraz/branch-cleanup-action@master
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
