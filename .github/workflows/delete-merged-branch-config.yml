@@ -1,11 +1,10 @@
 name: delete_branch
 
 on: [pull_request]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: jessfraz/branch-cleanup-action@master
-      with:
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
