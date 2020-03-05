@@ -25,7 +25,7 @@
         "php": ">=7.1",
         "ext-json": "*",
         "kreait/firebase-php": "^4.33",
-        "monolog/monolog": "^1.24",
+        "monolog/monolog": "^2.0.0",
         "php-di/php-di": "^6.0",
         "slim/psr7": "^1.0.0",
         "slim/slim": "^4.1"
