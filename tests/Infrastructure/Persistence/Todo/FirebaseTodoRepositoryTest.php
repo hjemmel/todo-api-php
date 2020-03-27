@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Tests\Infrastructure\Persistence\Todo;
 
 use App\Domain\Todo\Todo;
+use App\Domain\Todo\TodoInvalidNameException;
+use App\Domain\Todo\TodoNotFoundException;
 use App\Infrastructure\Persistence\Todo\FirebaseTodoRepository;
 use Kreait\Firebase\Database;
 use Kreait\Firebase\Database\Reference;
@@ -15,17 +17,15 @@ class FirebaseTodoRepositoryTest extends TestCase
 {
 
     /**
-     * @var Database|\PHPUnit_Framework_MockObject_MockObject
+     * @var Database|\MockObject
      */
     private $database;
 
     /** @var Reference|MockObject */
     private $ref;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        parent::setUp();
-
         $this->database = $this->createMock(Database::class);
         $this->ref = $this->createMock(Reference::class);
 
@@ -85,9 +85,6 @@ class FirebaseTodoRepositoryTest extends TestCase
         $this->assertEquals($todo, $todoRepository->findTodoById("C137"));
     }
 
-    /**
-     * @expectedException \App\Domain\Todo\TodoNotFoundException
-     */
     public function testFindTodoByIdThrowsNotFoundException()
     {
         $snapshot = $this->createMock(Snapshot::class);
@@ -98,6 +95,8 @@ class FirebaseTodoRepositoryTest extends TestCase
         $snapshot
             ->method("exists")
             ->willReturn(false);
+
+        $this->expectException(TodoNotFoundException::class);
 
         $todoRepository = new FirebaseTodoRepository($this->database);
         $todoRepository->findTodoById("C137");
@@ -148,9 +147,6 @@ class FirebaseTodoRepositoryTest extends TestCase
         $this->assertEquals($expectedTodo, $todoRepository->update('C137', 'Morty Smith', null));
     }
 
-    /**
-     * @expectedException \App\Domain\Todo\TodoNotFoundException
-     */
     public function testUpdateThrowsNotFoundException()
     {
         $snapshot = $this->createMock(Snapshot::class);
@@ -161,6 +157,9 @@ class FirebaseTodoRepositoryTest extends TestCase
         $snapshot
             ->method("exists")
             ->willReturn(false);
+
+        $this->expectException(TodoNotFoundException::class);
+
         $todoRepository = new FirebaseTodoRepository($this->database);
         $todoRepository->update('C137', 'Rick Sanchez', false);
     }
@@ -221,13 +220,11 @@ class FirebaseTodoRepositoryTest extends TestCase
         $this->assertIsString($todo->getId());
     }
 
-    /**
-     * @expectedException App\Domain\Todo\TodoInvalidNameException
-     */
     public function testCreateTodoEmptyName()
     {
-        $todoRepository = new FirebaseTodoRepository($this->database);
+        $this->expectException(TodoInvalidNameException::class);
 
+        $todoRepository = new FirebaseTodoRepository($this->database);
         $todoRepository->create('', null);
     }
 

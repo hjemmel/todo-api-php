@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Tests\Infrastructure\Persistence\Todo;
 
 use App\Domain\Todo\Todo;
+use App\Domain\Todo\TodoInvalidNameException;
+use App\Domain\Todo\TodoNotFoundException;
 use App\Infrastructure\Persistence\Todo\InMemoryTodoRepository;
 use Tests\TestCase;
 
@@ -34,11 +36,10 @@ class InMemoryTodoRepositoryTest extends TestCase
         $this->assertEquals($todo, $todoRepository->findTodoById("C137"));
     }
 
-    /**
-     * @expectedException \App\Domain\Todo\TodoNotFoundException
-     */
     public function testFindTodoByIdThrowsNotFoundException()
     {
+        $this->expectException(TodoNotFoundException::class);
+
         $todoRepository = new InMemoryTodoRepository([]);
         $todoRepository->findTodoById("C137");
     }
@@ -69,11 +70,10 @@ class InMemoryTodoRepositoryTest extends TestCase
         $this->assertEquals($expectedTodo, $todoRepository->findTodoById("C137"));
     }
 
-    /**
-     * @expectedException \App\Domain\Todo\TodoNotFoundException
-     */
     public function testUpdateThrowsNotFoundException()
     {
+        $this->expectException(TodoNotFoundException::class);
+
         $todoRepository = new InMemoryTodoRepository([]);
         $todoRepository->update('C137', 'Rick Sanchez', false);
     }
@@ -100,13 +100,11 @@ class InMemoryTodoRepositoryTest extends TestCase
         $this->assertIsString($todo->getId());
     }
 
-    /**
-     * @expectedException App\Domain\Todo\TodoInvalidNameException
-     */
     public function testCreateTodoEmptyName()
     {
-        $todoRepository = new InMemoryTodoRepository([]);
+        $this->expectException(TodoInvalidNameException::class);
 
+        $todoRepository = new InMemoryTodoRepository([]);
         $todoRepository->create('', null);
     }
 
