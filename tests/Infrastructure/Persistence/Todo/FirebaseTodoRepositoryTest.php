@@ -22,10 +22,8 @@ class FirebaseTodoRepositoryTest extends TestCase
     /** @var Reference|MockObject */
     private $ref;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        parent::setUp();
-
         $this->database = $this->createMock(Database::class);
         $this->ref = $this->createMock(Reference::class);
 
