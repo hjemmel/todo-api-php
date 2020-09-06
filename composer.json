@@ -24,7 +24,7 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "kreait/firebase-php": "^4.33",
+        "kreait/firebase-php": "^5.0",
         "monolog/monolog": "^2.0.0",
         "php-di/php-di": "^6.0",
         "slim/psr7": "^1.0.0",
