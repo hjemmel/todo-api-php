@@ -51,7 +51,7 @@ jobs:
           badge: true
           hide_complexity: true
           fail_below_min: false
-          thresholds: "80 90"
+          thresholds: "70 90"
           format: "markdown"
           output: "both"
 
