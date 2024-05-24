@@ -1,21 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Application\Actions\Todo;
 
-use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
-use App\Application\Handlers\HttpErrorHandler;
 use App\Domain\Todo\Todo;
-use App\Domain\Todo\TodoNotFoundException;
 use App\Domain\Todo\TodoRepository;
 use DI\Container;
-use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
-use function GuzzleHttp\Psr7\stream_for;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class UpdateActionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testAction()
     {
         $app = $this->getAppInstance();

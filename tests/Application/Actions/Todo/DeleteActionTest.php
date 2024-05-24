@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Application\Actions\Todo;
@@ -12,9 +13,12 @@ use App\Domain\Todo\TodoRepository;
 use DI\Container;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class DeleteActionTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testAction()
     {
         $app = $this->getAppInstance();
@@ -50,7 +54,7 @@ class DeleteActionTest extends TestCase
         $responseFactory = $app->getResponseFactory();
 
         $errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
-        $errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, false ,false);
+        $errorMiddleware = new ErrorMiddleware($callableResolver, $responseFactory, true, false, false);
         $errorMiddleware->setDefaultErrorHandler($errorHandler);
 
         $app->add($errorMiddleware);
