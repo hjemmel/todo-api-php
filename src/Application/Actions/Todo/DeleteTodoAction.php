@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\Actions\Todo;
@@ -15,7 +16,7 @@ class DeleteTodoAction extends TodoAction
         $todoId = (string) $this->resolveArg('id');
         $todos = $this->todoRepository->deleteTodoById($todoId);
 
-        $this->logger->info("Todo of id `${todoId}` was deleted.");
+        $this->logger->info("Todo of id `{$todoId}` was deleted.");
 
         return $this->respondWithData($todos);
     }
