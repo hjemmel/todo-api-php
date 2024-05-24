@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\Actions\Todo;
@@ -15,7 +16,7 @@ class ViewTodoAction extends TodoAction
         $todoId = (string) $this->resolveArg('id');
         $todo = $this->todoRepository->findTodoById($todoId);
 
-        $this->logger->info("Todo of id `${todoId}` was viewed.");
+        $this->logger->info("Todo of id `{$todoId}` was viewed.");
 
         return $this->respondWithData($todo);
     }
