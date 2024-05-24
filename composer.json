@@ -22,7 +22,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": ">=8.0",
         "ext-json": "*",
         "kreait/firebase-php": "^5.0",
         "monolog/monolog": "^2.0.0",
