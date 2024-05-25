@@ -42,7 +42,7 @@ jobs:
       - name: Tests
         run: | 
           mkdir -p ~/phpunit
-          ./vendor/bin/phpunit  --coverage-cobertura=~/phpunit/coverage.xml --coverage-html ~/phpunit/html --log-junit ~/phpunit/junit.xml tests
+          composer test --  --coverage-cobertura=~/phpunit/coverage.xml --coverage-html ~/phpunit/html --log-junit ~/phpunit/junit.xml
 
       - name: Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.3.0
