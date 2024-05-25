@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Domain\Todo;
@@ -8,7 +9,7 @@ use Tests\TestCase;
 
 class TodoTest extends TestCase
 {
-    public function todoProvider()
+    public static function todoProvider()
     {
         return [
             ["C137", 'Rick Sanchez', true],
