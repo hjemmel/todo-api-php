@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.2",
-        "phpunit/phpunit": "11.1.*"
+        "phpunit/phpunit": "11.5.*"
     },
     "config": {
         "process-timeout": 0,
