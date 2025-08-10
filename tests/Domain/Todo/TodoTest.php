@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Tests\Domain\Todo;
 
 use App\Domain\Todo\Todo;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TodoTest extends TestCase
 {
-    public static function todoProvider()
+    public static function todoProvider(): array
     {
         return [
             ["C137", 'Rick Sanchez', true],
@@ -20,13 +21,8 @@ class TodoTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider todoProvider
-     * @param $id
-     * @param $name
-     * @param $done
-     */
-    public function testGetters($id, $name, $done)
+    #[DataProvider('todoProvider')]
+    public function testGetters(string $id, string $name, bool $done): void
     {
         $todo = new Todo($id, $name, $done);
 
@@ -35,13 +31,8 @@ class TodoTest extends TestCase
         $this->assertEquals($done, $todo->isDone());
     }
 
-    /**
-     * @dataProvider todoProvider
-     * @param $id
-     * @param $name
-     * @param $done
-     */
-    public function testJsonSerialize($id, $name, $done)
+    #[DataProvider('todoProvider')]
+    public function testJsonSerialize(string $id, string $name, bool $done): void
     {
         $todo = new Todo($id, $name, $done);
 

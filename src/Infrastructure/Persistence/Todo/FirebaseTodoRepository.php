@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 class FirebaseTodoRepository implements TodoRepository
 {
     /**
-     * @var Database
+     * @var DatabaseInterface
      */
     private $database;
 
@@ -29,12 +29,17 @@ class FirebaseTodoRepository implements TodoRepository
      * FirebaseTodoRepository constructor.
      *
      */
-    public function __construct(Database $database = null)
+    public function __construct(?DatabaseInterface $database = null)
     {
-        $this->database = $database ?? (new Factory)
-            ->withServiceAccount($_SERVER['DOCUMENT_ROOT'] . '/firebase-key.json')
-            ->withDatabaseUri($_ENV["DATABASE_URI"])
-            ->createDatabase();
+        if ($database === null) {
+            $firebaseDb = (new Factory)
+                ->withServiceAccount($_SERVER['DOCUMENT_ROOT'] . '/firebase-key.json')
+                ->withDatabaseUri($_ENV['DATABASE_URI'])
+                ->createDatabase();
+            $this->database = new DatabaseWrapper($firebaseDb);
+        } else {
+            $this->database = $database;
+        }
     }
 
     /**
