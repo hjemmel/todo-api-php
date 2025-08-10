@@ -7,7 +7,7 @@ use App\Domain\Todo\Todo;
 use App\Domain\Todo\TodoInvalidNameException;
 use App\Domain\Todo\TodoNotFoundException;
 use App\Infrastructure\Persistence\Todo\FirebaseTodoRepository;
-use Kreait\Firebase\Database;
+use App\Infrastructure\Persistence\Todo\DatabaseInterface;
 use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Database\Snapshot;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,7 +17,7 @@ class FirebaseTodoRepositoryTest extends TestCase
 {
 
     /**
-     * @var Database|\MockObject
+     * @var DatabaseInterface|\MockObject
      */
     private $database;
 
@@ -26,7 +26,7 @@ class FirebaseTodoRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->database = $this->createMock(Database::class);
+        $this->database = $this->createMock(DatabaseInterface::class);
         $this->ref = $this->createMock(Reference::class);
 
         $this->database
@@ -34,7 +34,7 @@ class FirebaseTodoRepositoryTest extends TestCase
             ->willReturn($this->ref);
 
         $_SERVER['DOCUMENT_ROOT'] = __DIR__;
-        $_ENV['$_SERVER'] = "http://domain.tld/";
+        $_ENV['DATABASE_URI'] = "http://domain.tld/";
 
     }
 

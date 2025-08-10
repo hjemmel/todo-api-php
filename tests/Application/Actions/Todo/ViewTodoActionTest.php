@@ -13,11 +13,9 @@ use App\Domain\Todo\TodoRepository;
 use DI\Container;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class ViewTodoActionTest extends TestCase
 {
-    use ProphecyTrait;
 
     public function testAction()
     {
@@ -28,13 +26,14 @@ class ViewTodoActionTest extends TestCase
 
         $todo = new Todo("C137", 'Central Finite Curve', true);
 
-        $todoRepositoryProphecy = $this->prophesize(TodoRepository::class);
-        $todoRepositoryProphecy
-            ->findTodoById("C137")
-            ->willReturn($todo)
-            ->shouldBeCalledOnce();
+        $todoRepositoryMock = $this->createMock(TodoRepository::class);
+        $todoRepositoryMock
+            ->expects($this->once())
+            ->method('findTodoById')
+            ->with("C137")
+            ->willReturn($todo);
 
-        $container->set(TodoRepository::class, $todoRepositoryProphecy->reveal());
+        $container->set(TodoRepository::class, $todoRepositoryMock);
 
         $request = $this->createRequest('GET', '/todos/C137');
         $response = $app->handle($request);
@@ -62,13 +61,14 @@ class ViewTodoActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $todoRepositoryProphecy = $this->prophesize(TodoRepository::class);
-        $todoRepositoryProphecy
-            ->findTodoById("C666")
-            ->willThrow(new TodoNotFoundException())
-            ->shouldBeCalledOnce();
+        $todoRepositoryMock = $this->createMock(TodoRepository::class);
+        $todoRepositoryMock
+            ->expects($this->once())
+            ->method('findTodoById')
+            ->with("C666")
+            ->willThrowException(new TodoNotFoundException());
 
-        $container->set(TodoRepository::class, $todoRepositoryProphecy->reveal());
+        $container->set(TodoRepository::class, $todoRepositoryMock);
 
         $request = $this->createRequest('GET', '/todos/C666');
         $response = $app->handle($request);
