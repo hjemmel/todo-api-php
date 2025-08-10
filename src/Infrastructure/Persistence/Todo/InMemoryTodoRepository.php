@@ -22,7 +22,7 @@ class InMemoryTodoRepository implements TodoRepository
      *
      * @param array|null $todos
      */
-    public function __construct(array $todos = null)
+    public function __construct(?array $todos = null)
     {
         $this->todos = $todos ?? [
                 '1' => new Todo('1', 'Buy apples', false),

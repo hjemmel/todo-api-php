@@ -9,11 +9,9 @@ use App\Domain\Todo\TodoRepository;
 use App\Domain\Todo\Todo;
 use DI\Container;
 use Tests\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class ListTodoActionTest extends TestCase
 {
-    use ProphecyTrait;
 
     public function testAction()
     {
@@ -24,13 +22,13 @@ class ListTodoActionTest extends TestCase
 
         $todo = new Todo("C137", 'Central Finite Curve', true);
 
-        $todoRepositoryProphecy = $this->prophesize(TodoRepository::class);
-        $todoRepositoryProphecy
-            ->findAll()
-            ->willReturn([$todo])
-            ->shouldBeCalledOnce();
+        $todoRepositoryMock = $this->createMock(TodoRepository::class);
+        $todoRepositoryMock
+            ->expects($this->once())
+            ->method('findAll')
+            ->willReturn([$todo]);
 
-        $container->set(TodoRepository::class, $todoRepositoryProphecy->reveal());
+        $container->set(TodoRepository::class, $todoRepositoryMock);
 
         $request = $this->createRequest('GET', '/todos');
         $response = $app->handle($request);
