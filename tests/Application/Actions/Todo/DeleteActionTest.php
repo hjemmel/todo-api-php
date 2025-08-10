@@ -13,11 +13,9 @@ use App\Domain\Todo\TodoRepository;
 use DI\Container;
 use Slim\Middleware\ErrorMiddleware;
 use Tests\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class DeleteActionTest extends TestCase
 {
-    use ProphecyTrait;
 
     public function testAction()
     {
@@ -28,13 +26,14 @@ class DeleteActionTest extends TestCase
 
         $todos = [new Todo("C137", 'Central Finite Curve', true)];
 
-        $todoRepositoryProphecy = $this->prophesize(TodoRepository::class);
-        $todoRepositoryProphecy
-            ->deleteTodoById("C133")
-            ->willReturn($todos)
-            ->shouldBeCalledOnce();
+        $todoRepositoryMock = $this->createMock(TodoRepository::class);
+        $todoRepositoryMock
+            ->expects($this->once())
+            ->method('deleteTodoById')
+            ->with("C133")
+            ->willReturn($todos);
 
-        $container->set(TodoRepository::class, $todoRepositoryProphecy->reveal());
+        $container->set(TodoRepository::class, $todoRepositoryMock);
 
         $request = $this->createRequest('DELETE', '/todos/C133');
         $response = $app->handle($request);
@@ -62,13 +61,14 @@ class DeleteActionTest extends TestCase
         /** @var Container $container */
         $container = $app->getContainer();
 
-        $todoRepositoryProphecy = $this->prophesize(TodoRepository::class);
-        $todoRepositoryProphecy
-            ->deleteTodoById("C666")
-            ->willThrow(new TodoNotFoundException())
-            ->shouldBeCalledOnce();
+        $todoRepositoryMock = $this->createMock(TodoRepository::class);
+        $todoRepositoryMock
+            ->expects($this->once())
+            ->method('deleteTodoById')
+            ->with("C666")
+            ->willThrowException(new TodoNotFoundException());
 
-        $container->set(TodoRepository::class, $todoRepositoryProphecy->reveal());
+        $container->set(TodoRepository::class, $todoRepositoryMock);
 
         $request = $this->createRequest('DELETE', '/todos/C666');
         $response = $app->handle($request);
