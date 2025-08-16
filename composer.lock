@@ -1268,16 +1268,16 @@
         },
         {
             "name": "kreait/firebase-php",
-            "version": "7.21.1",
+            "version": "7.21.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kreait/firebase-php.git",
-                "reference": "74d80b80263507a30da8b29fa84e0c84039c61ab"
+                "reference": "f63ff9f199530b2a5a26c00a14f43a7b44a2b6cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/74d80b80263507a30da8b29fa84e0c84039c61ab",
-                "reference": "74d80b80263507a30da8b29fa84e0c84039c61ab",
+                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/f63ff9f199530b2a5a26c00a14f43a7b44a2b6cf",
+                "reference": "f63ff9f199530b2a5a26c00a14f43a7b44a2b6cf",
                 "shasum": ""
             },
             "require": {
@@ -1308,17 +1308,17 @@
                 "psr/log": "^1.1|^2.0|^3.0.2"
             },
             "require-dev": {
-                "google/cloud-firestore": "^1.50.0",
-                "php-cs-fixer/shim": "^3.81.0",
+                "google/cloud-firestore": "^1.53.0",
+                "php-cs-fixer/shim": "^3.85.1",
                 "phpstan/extension-installer": "^1.4.3",
-                "phpstan/phpstan": "^2.1.17",
+                "phpstan/phpstan": "^2.1.22",
                 "phpstan/phpstan-deprecation-rules": "^2.0.3",
-                "phpstan/phpstan-phpunit": "^2.0.6",
-                "phpstan/phpstan-strict-rules": "^2.0.3",
-                "phpunit/phpunit": "^10.5.46",
-                "rector/rector": "^2.0.17",
+                "phpstan/phpstan-phpunit": "^2.0.7",
+                "phpstan/phpstan-strict-rules": "^2.0.6",
+                "phpunit/phpunit": "^10.5.48",
+                "rector/rector": "^2.1.2",
                 "shipmonk/composer-dependency-analyser": "^1.8.3",
-                "symfony/var-dumper": "^6.4.15 || ^7.3.0",
+                "symfony/var-dumper": "^6.4.15 || ^7.3.2",
                 "vlucas/phpdotenv": "^5.6.2"
             },
             "suggest": {
@@ -1365,7 +1365,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-24T09:40:40+00:00"
+            "time": "2025-08-15T07:30:48+00:00"
         },
         {
             "name": "kreait/firebase-tokens",
