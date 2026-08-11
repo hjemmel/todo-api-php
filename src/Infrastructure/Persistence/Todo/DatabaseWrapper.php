@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Todo;
 
-use Kreait\Firebase\Database;
-use Kreait\Firebase\Database\Reference;
+use Kreait\Firebase\Contract\Database;
 
 class DatabaseWrapper implements DatabaseInterface
 {
@@ -16,14 +15,35 @@ class DatabaseWrapper implements DatabaseInterface
         $this->database = $database;
     }
 
-    /**
-     * Get a reference to a specific path in the database
-     *
-     * @param string $path
-     * @return Reference
-     */
-    public function getReference(string $path): Reference
+    public function getValue(string $path): mixed
     {
-        return $this->database->getReference($path);
+        return $this->database->getReference($path)->getValue();
+    }
+
+    public function exists(string $path): bool
+    {
+        return $this->database->getReference($path)->getSnapshot()->exists();
+    }
+
+    public function push(string $path, array $value): string
+    {
+        $reference = $this->database->getReference($path)->push($value);
+        $key = $reference->getKey();
+
+        if ($key === null) {
+            throw new \RuntimeException(sprintf('Failed to push value at path "%s"', $path));
+        }
+
+        return $key;
+    }
+
+    public function update(string $path, array $value): void
+    {
+        $this->database->getReference($path)->update($value);
+    }
+
+    public function remove(string $path): void
+    {
+        $this->database->getReference($path)->remove();
     }
 }

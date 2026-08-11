@@ -1,16 +1,15 @@
-version: '3.7'
-
 volumes:
     logs:
         driver: local
 
 services:
+    # Long-running dev server: http://localhost:8080
     slim:
-        image: php:8.4-alpine
+        build: .
         working_dir: /var/www
         command: php -S 0.0.0.0:8080 -t public
         env_file:
-          - .env.development
+            - .env.development
         environment:
             docker: "true"
         ports:
@@ -18,3 +17,18 @@ services:
         volumes:
             - .:/var/www
             - logs:/var/www/logs
+
+    # One-shot container for composer / phpunit:
+    #   docker compose run --rm cli composer install
+    #   docker compose run --rm cli composer test
+    cli:
+        build: .
+        working_dir: /var/www
+        env_file:
+            - .env.development
+        environment:
+            docker: "true"
+        volumes:
+            - .:/var/www
+        entrypoint: []
+        command: ["php", "-v"]
