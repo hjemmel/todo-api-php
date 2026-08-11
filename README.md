@@ -29,17 +29,41 @@ cd [my-app-name]
 composer start
 ```
 
-Or you can use `docker-compose` to run the app with `docker`, so you can run these commands:
-```bash
-cd [my-app-name]
-docker-compose up -d
-```
-After that, open `http://localhost:8080` in your browser.
-
 Run this command in the application directory to run the test suite
 
 ```bash
 composer test
 ```
+
+## Docker
+
+Docker is the supported way to work on this project without installing PHP locally. The
+image pins PHP 8.4 with Composer and Xdebug, matching what CI runs.
+
+Start the dev server:
+
+```bash
+docker compose up slim -d
+```
+
+After that, open `http://localhost:8080` in your browser.
+
+The `cli` service is a one-shot container for Composer and PHPUnit:
+
+```bash
+docker compose run --rm cli composer install
+docker compose run --rm cli composer test
+docker compose run --rm cli composer outdated --direct
+```
+
+To run the suite with coverage, as CI does:
+
+```bash
+docker compose run --rm cli composer test -- --coverage-text
+```
+
+Hitting the `/todos` endpoints needs real Firebase credentials: copy
+`firebase-key-template.json` to `public/firebase-key.json` and fill in `.env.development`.
+Without them the app still boots and serves `/`, but `/todos` returns a 500.
 
 That's it! Now go build something cool.

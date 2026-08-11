@@ -1,6 +1,7 @@
 .idea/
 /coverage/
 /vendor/
+/.phpunit.cache/
 /logs/*
 !/logs/README.md
 
