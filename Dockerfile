@@ -1,4 +1,4 @@
-FROM php:8.4-cli-alpine
+FROM php:8.5-cli-alpine
 
 # Xdebug needs the build toolchain; git/unzip let Composer work with VCS + dist packages.
 RUN apk add --no-cache git unzip linux-headers $PHPIZE_DEPS \
