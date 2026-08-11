@@ -7,28 +7,13 @@ use App\Domain\Todo\Todo;
 use App\Domain\Todo\TodoInvalidNameException;
 use App\Domain\Todo\TodoNotFoundException;
 use App\Domain\Todo\TodoRepository;
-use Kreait\Firebase\Database;
-use Kreait\Firebase\Database\Reference;
 use Kreait\Firebase\Exception\FirebaseException;
 use Kreait\Firebase\Factory;
-use Psr\Log\LoggerInterface;
 
 class FirebaseTodoRepository implements TodoRepository
 {
-    /**
-     * @var DatabaseInterface
-     */
-    private $database;
+    private DatabaseInterface $database;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * FirebaseTodoRepository constructor.
-     *
-     */
     public function __construct(?DatabaseInterface $database = null)
     {
         if ($database === null) {
@@ -48,13 +33,13 @@ class FirebaseTodoRepository implements TodoRepository
      */
     public function findAll(): array
     {
-        $todosFire = $this->database->getReference("/todos")->getValue();
+        $todosFire = $this->database->getValue('/todos');
 
         $todos = [];
 
         if ($todosFire) {
             foreach ($todosFire as $key => $value) {
-                array_push($todos, new Todo($key, $value["name"], $value["done"]));
+                $todos[] = new Todo($key, $value['name'], $value['done']);
             }
         }
 
@@ -67,11 +52,11 @@ class FirebaseTodoRepository implements TodoRepository
      */
     public function findTodoById(string $id): Todo
     {
-        $todo = $this->getTodoById($id);
+        $this->assertTodoExists($id);
 
-        $values = $todo->getValue();
+        $values = $this->database->getValue('/todos/' . $id);
 
-        return new Todo($todo->getKey(), $values["name"], $values["done"]);
+        return new Todo($id, $values['name'], $values['done']);
     }
 
     /**
@@ -86,14 +71,12 @@ class FirebaseTodoRepository implements TodoRepository
             $done = false;
         }
 
-        $todos = $this->database->getReference("/todos");
-
-        $newTodo = $todos->push([
+        $key = $this->database->push('/todos', [
             'name' => $name,
             'done' => $done,
         ]);
 
-        return new Todo($newTodo->getKey(), $name, $done);
+        return new Todo($key, $name, $done);
     }
 
     /**
@@ -103,14 +86,13 @@ class FirebaseTodoRepository implements TodoRepository
     public function update(string $id, string $name, ?bool $done): Todo
     {
         $this->validateTodo($name);
-
-        $todo = $this->getTodoById($id);
+        $this->assertTodoExists($id);
 
         if (!isset($done)) {
             $done = false;
         }
 
-        $todo->update([
+        $this->database->update('/todos/' . $id, [
             'name' => $name,
             'done' => $done,
         ]);
@@ -124,36 +106,27 @@ class FirebaseTodoRepository implements TodoRepository
      */
     public function deleteTodoById(string $id): array
     {
-        $todo = $this->getTodoById($id);
+        $this->assertTodoExists($id);
 
-        $todo->remove();
+        $this->database->remove('/todos/' . $id);
+
         return $this->findAll();
     }
 
     /**
-     * @param string $id
-     * @return Reference
-     * @throws FirebaseException
      * @throws TodoNotFoundException
      */
-    private function getTodoById(string $id)
+    private function assertTodoExists(string $id): void
     {
-        $todo = $this->database->getReference("/todos/" . $id);
-
-        $exists = $todo->getSnapshot()->exists();
-
-        if (!isset($exists) || !$exists) {
+        if (!$this->database->exists('/todos/' . $id)) {
             throw new TodoNotFoundException();
         }
-
-        return $todo;
     }
 
     /**
-     * @param string $name
      * @throws TodoInvalidNameException
      */
-    private function validateTodo(string $name)
+    private function validateTodo(string $name): void
     {
         if (empty(trim($name))) {
             throw new TodoInvalidNameException();
